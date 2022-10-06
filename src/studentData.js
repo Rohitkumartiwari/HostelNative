@@ -42,15 +42,12 @@ export default function studentData() {
 
     formData.append("price", parseInt(info.price));
     formData.append("date", date);
-    // axios
-    //   .put(`https://apis-new.onrender.com/users/${info._id}`, formData)
-    //   .then((res) => {
-    //     setMessage(res.data.message);
-    //     setModalVisible(!isModalVisible);
-    //   });
-    for (let data of formData.entries()) {
-      console.log(data);
-    }
+    axios
+      .put(`https://apis-new.onrender.com/users/${info._id}`, formData)
+      .then((res) => {
+        setMessage(res.data.message);
+        setModalVisible(!isModalVisible);
+      });
   };
   const del = (id) => {
     const newData = data.filter((a) => a._id !== id);
@@ -59,6 +56,7 @@ export default function studentData() {
       .delete(`https://apis-new.onrender.com/users/${id}`)
       .then((res) => console.log(res));
   };
+  console.log(data);
   const renderItem = ({ item }) => (
     <View>
       <View key={item._id} style={{ padding: 10 }}>
@@ -212,8 +210,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   contentContainer: {
-    flex: 1, // pushes the footer to the end of the screen
-    justifyContent: "flex-end",
+    // flex: 1,
+    // justifyContent: "flex-end",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: -55,
   },
   separatorLine: {
     height: 1,
