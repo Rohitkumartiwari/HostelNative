@@ -11,12 +11,60 @@ export default function Dashboard() {
     });
   }, []);
   const value = data.slice(-1);
-
+  console.log(value);
   return (
     <View style={styles.container}>
-      <Image style={styles.img} source={require("../assets/img.jpg")} />
-      <Text style={styles.welcome}>WELCOME TO</Text>
-      <Text style={styles.header_name}>Dashbaord</Text>
+      {value.map((a) => {
+        return (
+          <View
+            key={a._id}
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              gap: 15,
+              padding: 10,
+              justifyContent: "flex-start",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              marginTop: 50,
+            }}
+          >
+            <View style={styles.card}>
+              <Text
+                style={{ fontSize: 25, textAlign: "center", color: "green" }}
+              >
+                Total Students
+              </Text>
+              <Text style={{ fontSize: 20 }}>{a.totalPersons}</Text>
+            </View>
+            <View style={styles.card}>
+              <Text
+                style={{ fontSize: 25, textAlign: "center", color: "green" }}
+              >
+                Total Boys
+              </Text>
+              <Text style={{ fontSize: 20 }}>{a.totalBoys}</Text>
+            </View>
+            <View style={styles.card}>
+              <Text
+                style={{ fontSize: 25, textAlign: "center", color: "green" }}
+              >
+                Total Girls
+              </Text>
+              <Text style={{ fontSize: 20 }}>{a.totalGirls}</Text>
+            </View>
+            <View style={styles.card}>
+              <Text
+                style={{ fontSize: 25, textAlign: "center", color: "green" }}
+              >
+                Empty Rooms
+              </Text>
+              <Text style={{ fontSize: 20 }}>{a.emptyRooms}</Text>
+            </View>
+          </View>
+        );
+      })}
+
       <View style={styles.contentContainer}>
         <Menu />
       </View>
@@ -41,6 +89,15 @@ const styles = StyleSheet.create({
     marginBottom: 11,
     borderRadius: 15,
     marginTop: 20,
+  },
+  card: {
+    borderRadius: 10,
+    backgroundColor: "#dddd",
+    width: 150,
+    height: 150,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
   header_name: {
     marginTop: 11,
