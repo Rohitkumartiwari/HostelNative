@@ -8,9 +8,9 @@ export default function Home() {
       <Text style={styles.welcome}>WELCOME TO</Text>
       <Text style={styles.header_name}>Ramarwati Hostel</Text>
 
-      <View style={styles.contentContainer}>
+      {/* <View style={styles.contentContainer}>
         <Menu />
-      </View>
+      </View> */}
       <StatusBar style="auto" />
     </View>
   );
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    paddingTop: 50,
   },
   contentContainer: {
     flex: 1, // pushes the footer to the end of the screen

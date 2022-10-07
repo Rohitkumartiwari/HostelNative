@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import axios from "axios";
 
@@ -39,7 +40,7 @@ export default function UpdateData() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.labels}>Empty Rooms</Text>
       <TextInput
         style={styles.inputStyle}
@@ -56,7 +57,6 @@ export default function UpdateData() {
       <TextInput
         style={styles.inputStyle}
         value={totalBoys}
-        numberOfLines={5}
         onChangeText={(address) => setBoys(address)}
       />
       <Text style={styles.labels}>Total Girls</Text>
@@ -71,10 +71,10 @@ export default function UpdateData() {
         </Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
-      <View style={styles.contentContainer}>
+      {/* <View style={styles.contentContainer}>
         <Menu />
-      </View>
-    </View>
+      </View> */}
+    </ScrollView>
   );
 }
 
@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 30,
+    paddingHorizontal: 10,
   },
   contentContainer: {
     flex: 1, // pushes the footer to the end of the screen
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 2,
     marginHorizontal: 10,
+    borderRadius: 10,
   },
   picker: {
     height: 45,

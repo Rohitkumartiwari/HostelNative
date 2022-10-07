@@ -16,17 +16,12 @@ import Menu from "./component/Menu";
 import moment from "moment";
 import axios from "axios";
 import CalendarPicker from "react-native-calendar-picker";
-
-export default function studentData() {
+import Moment from "react-moment";
+export default function StudentData() {
   const [data, setData] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(null);
 
-  const [name, setName] = useState();
-  const [fname, setFName] = useState();
-  const [address, setAddress] = useState();
-  const [mobile, setMobile] = useState();
-  const [price, setPrice] = useState();
   const [info, setInfo] = useState([]);
   useEffect(() => {
     axios
@@ -46,8 +41,11 @@ export default function studentData() {
       .put(`https://apis-new.onrender.com/users/${info._id}`, formData)
       .then((res) => {
         setMessage(res.data.message);
-        setModalVisible(!isModalVisible);
       });
+  };
+
+  const close = () => {
+    setModalVisible(!isModalVisible);
   };
   const del = (id) => {
     const newData = data.filter((a) => a._id !== id);
@@ -56,7 +54,7 @@ export default function studentData() {
       .delete(`https://apis-new.onrender.com/users/${id}`)
       .then((res) => console.log(res));
   };
-  console.log(data);
+
   const renderItem = ({ item }) => (
     <View>
       <View key={item._id} style={{ padding: 10 }}>
@@ -83,6 +81,7 @@ export default function studentData() {
               alignItems: "center",
               paddingVertical: 5,
               borderRadius: 10,
+              marginRight: 10,
             }}
             onPress={() => {
               toggleModal(), setInfo(item);
@@ -108,7 +107,6 @@ export default function studentData() {
           >
             <ScrollView>
               <View style={{ flex: 1, color: "white" }}>
-                {/* {console.log(info)} */}
                 <Text style={{ textAlign: "center", fontSize: 20 }}>
                   Update Detail!
                 </Text>
@@ -117,8 +115,8 @@ export default function studentData() {
                   style={styles.inputStyle}
                   value={info?.name}
                   id="name"
-                  onTextChange={(newText) =>
-                    setName({ ...info, name: newText })
+                  onChangeText={(newText) =>
+                    setInfo({ ...info, name: newText })
                   }
                 />
                 <Text style={styles.labels}>Father Name</Text>
@@ -126,8 +124,8 @@ export default function studentData() {
                   style={styles.inputStyle}
                   value={info?.FathersName}
                   id="fname"
-                  onTextChange={(newText) =>
-                    setFName({ ...info, FathersName: newText })
+                  onChangeText={(newText) =>
+                    setInfo({ ...info, FathersName: newText })
                   }
                 />
                 <Text style={styles.labels_address}>Address</Text>
@@ -136,8 +134,8 @@ export default function studentData() {
                   value={info?.address}
                   numberOfLines={5}
                   id="address"
-                  onTextChange={(newText) =>
-                    setAddress({ ...info, address: newText })
+                  onChangeText={(newText) =>
+                    setInfo({ ...info, address: newText })
                   }
                 />
                 <Text style={styles.labels}>Mobile No</Text>
@@ -145,8 +143,8 @@ export default function studentData() {
                   style={styles.inputStyle}
                   value={info?.mobile}
                   id="mobile"
-                  onTextChange={(newText) =>
-                    setMobile({ ...info, mobile: newText })
+                  onChangeText={(newText) =>
+                    setInfo({ ...info, mobile: newText })
                   }
                 />
                 <Text style={styles.labels}>Price</Text>
@@ -154,8 +152,8 @@ export default function studentData() {
                   style={styles.inputStyle}
                   value={info?.price}
                   id="price"
-                  onTextChange={(newText) =>
-                    setPrice({ ...info, price: newText })
+                  onChangeText={(newText) =>
+                    setInfo({ ...info, price: newText })
                   }
                 />
 
@@ -163,13 +161,18 @@ export default function studentData() {
                 <CalendarPicker
                   style={{ padding: 10 }}
                   onDateChange={(d) => {
-                    setDate(moment(d).format("MMMM Do YYYY"));
+                    setDate(moment(d).format("YYYY/MM/DD"));
                   }}
                 />
 
                 <TouchableOpacity style={styles.saveButton}>
                   <Text style={styles.saveButtonText} onPress={submit}>
                     Save
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.saveButton}>
+                  <Text style={styles.saveButtonText} onPress={close}>
+                    Close
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -187,8 +190,11 @@ export default function studentData() {
   };
 
   return (
-    <View>
+    <ScrollView>
       <SafeAreaView style={styles.container}>
+        <Text style={{ textAlign: "center", fontSize: 30, color: "blue" }}>
+          Student Data
+        </Text>
         <FlatList
           data={data}
           renderItem={renderItem}
@@ -196,10 +202,10 @@ export default function studentData() {
           ItemSeparatorComponent={SeparatorComponent}
         />
       </SafeAreaView>
-      <View style={styles.contentContainer}>
+      {/* <View style={styles.contentContainer}>
         <Menu />
-      </View>
-    </View>
+      </View> */}
+    </ScrollView>
   );
 }
 
@@ -208,15 +214,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    paddingTop: 40,
+    paddingLeft: 10,
   },
-  contentContainer: {
-    // flex: 1,
-    // justifyContent: "flex-end",
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: -55,
-  },
+
   separatorLine: {
     height: 1,
     backgroundColor: "plum",

@@ -11,7 +11,7 @@ export default function Dashboard() {
     });
   }, []);
   const value = data.slice(-1);
-  console.log(value);
+
   return (
     <View style={styles.container}>
       {value.map((a) => {
@@ -65,9 +65,9 @@ export default function Dashboard() {
         );
       })}
 
-      <View style={styles.contentContainer}>
+      {/* <View style={styles.contentContainer}>
         <Menu />
-      </View>
+      </View> */}
       <StatusBar style="auto" />
     </View>
   );
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    marginTop: 40,
   },
   contentContainer: {
     flex: 1, // pushes the footer to the end of the screen
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#dddd",
     width: 150,
     height: 150,
-
+    marginRight: 10,
+    marginBottom: 40,
     justifyContent: "center",
     alignItems: "center",
   },

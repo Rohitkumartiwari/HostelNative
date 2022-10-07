@@ -7,9 +7,14 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import axios from "axios";
-import { Picker } from "@react-native-picker/picker";
+import {
+  useFonts,
+  JosefinSans_400Regular,
+  JosefinSans_500Medium,
+} from "@expo-google-fonts/josefin-sans";
 import CalendarPicker from "react-native-calendar-picker";
 import { Alert } from "react-native-web";
 import moment from "moment";
@@ -46,10 +51,10 @@ export default function StudentForm() {
       setMessage(res.data.message);
     });
   };
-  // console.log(gender);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      {/* <Text styles={{ textAlign: "center" }}>Student Form</Text> */}
       <Text style={styles.labels}>Enter your name</Text>
       <TextInput
         style={styles.inputStyle}
@@ -106,10 +111,10 @@ export default function StudentForm() {
         </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
-      <View>
+      {/* <View>
         <Menu />
-      </View>
-    </View>
+      </View> */}
+    </ScrollView>
   );
 }
 
@@ -117,10 +122,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 30,
+    padding: 10,
   },
   labels: {
     fontWeight: "bold",
-    // fontSize: 15,
+    fontSize: 17,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",
@@ -131,7 +138,7 @@ const styles = StyleSheet.create({
   labels_address: {
     height: 40,
     fontWeight: "bold",
-    // fontSize: 15,
+    fontSize: 17,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",
@@ -145,6 +152,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 2,
     marginHorizontal: 10,
+    borderRadius: 10,
   },
   picker: {
     height: 45,
@@ -158,11 +166,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#007BFF",
     padding: 15,
     margin: 5,
-    marginBottom: 10,
   },
   saveButtonText: {
     color: "#FFFFFF",
     fontSize: 20,
     textAlign: "center",
   },
+  inputContainer: { marginBottom: 20 },
 });
