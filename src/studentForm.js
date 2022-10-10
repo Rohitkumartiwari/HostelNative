@@ -54,39 +54,54 @@ export default function StudentForm() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <Text styles={{ textAlign: "center" }}>Student Form</Text> */}
-      <Text style={styles.labels}>Enter your name</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={name}
-        onChangeText={(userdata) => setName(userdata)}
-      />
-      <Text style={styles.labels}>Father Name</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={fname}
-        onChangeText={(fname) => setFName(fname)}
-      />
-      <Text style={styles.labels_address}>Address</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={address}
-        numberOfLines={5}
-        onChangeText={(address) => setAddress(address)}
-      />
-      <Text style={styles.labels}>Mobile No</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={mobile}
-        onChangeText={(mobile) => setMobile(mobile)}
-      />
-      <Text style={styles.labels}>Price</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={price}
-        onChangeText={(price) => setPrice(price)}
-      />
-      {/* <Text style={styles.labels}>Gender</Text>
+      <Text style={{ textAlign: "center", fontSize: 30, color: "blue" }}>
+        Student Form
+      </Text>
+      {message ? (
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            color: "green",
+            marginTop: 20,
+          }}
+        >
+          {message}
+        </Text>
+      ) : (
+        <>
+          <Text style={styles.labels}>Enter your name</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={name}
+            onChangeText={(userdata) => setName(userdata)}
+          />
+          <Text style={styles.labels}>Father Name</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={fname}
+            onChangeText={(fname) => setFName(fname)}
+          />
+          <Text style={styles.labels_address}>Address</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={address}
+            numberOfLines={5}
+            onChangeText={(address) => setAddress(address)}
+          />
+          <Text style={styles.labels}>Mobile No</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={mobile}
+            onChangeText={(mobile) => setMobile(mobile)}
+          />
+          <Text style={styles.labels}>Price</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={price}
+            onChangeText={(price) => setPrice(price)}
+          />
+          {/* <Text style={styles.labels}>Gender</Text>
       <Picker
         style={styles.picker}
         selectedValue={gender}
@@ -96,20 +111,23 @@ export default function StudentForm() {
         <Picker.Item label="Male" value="2" />
         <Picker.Item label="Female" value="3" />
       </Picker> */}
-      <Text style={styles.labels}>Joining Date</Text>
-      <CalendarPicker
-        onDateChange={(d) => {
-          setDate(moment(d).format("MMMM Do YYYY"));
-          setCalopen(!calOpen);
-        }}
-      />
-      <View style={styles.inputContainer}>
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText} onPress={submit}>
-            Save
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <Text style={styles.labels}>Joining Date</Text>
+          <CalendarPicker
+            onDateChange={(d) => {
+              setDate(moment(d).format("YYYY/MM/DD"));
+              setCalopen(!calOpen);
+            }}
+          />
+          <View style={styles.inputContainer}>
+            <TouchableOpacity style={styles.saveButton}>
+              <Text style={styles.saveButtonText} onPress={submit}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+
       <StatusBar style="auto" />
       {/* <View>
         <Menu />
@@ -127,7 +145,7 @@ const styles = StyleSheet.create({
   },
   labels: {
     fontWeight: "bold",
-    fontSize: 17,
+    fontSize: 18,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",
@@ -138,7 +156,7 @@ const styles = StyleSheet.create({
   labels_address: {
     height: 40,
     fontWeight: "bold",
-    fontSize: 17,
+    fontSize: 18,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",

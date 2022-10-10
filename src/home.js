@@ -7,7 +7,18 @@ export default function Home() {
       <Image style={styles.img} source={require("../assets/img.jpg")} />
       <Text style={styles.welcome}>WELCOME TO</Text>
       <Text style={styles.header_name}>Ramarwati Hostel</Text>
-
+      <Text
+        style={{
+          textAlign: "center",
+          fontSize: 30,
+          marginHorizontal: 20,
+          marginVertical: 10,
+          color: "green",
+        }}
+      >
+        You can find real you in hostel. Your strength, your weaknesses without
+        help of others​.....
+      </Text>
       {/* <View style={styles.contentContainer}>
         <Menu />
       </View> */}

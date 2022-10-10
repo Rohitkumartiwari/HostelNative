@@ -3,8 +3,6 @@ import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
-  View,
-  Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
@@ -13,13 +11,13 @@ import axios from "axios";
 
 import { Alert } from "react-native-web";
 
-import Menu from "./component/Menu";
 export default function UpdateData() {
   const [emptyRooms, setErrom] = useState();
   const [totalPersons, setTpersons] = useState();
   const [totalBoys, setBoys] = useState();
   const [totalGirls, setGirls] = useState();
   const [data, setData] = useState([]);
+  const [message, setMessage] = useState();
   const submit = () => {
     if (!emptyRooms && !totalPersons) {
       Alert.alert("please fill the form correctly");
@@ -28,10 +26,10 @@ export default function UpdateData() {
     }
     axios
       .post(`https://apis-new.onrender.com/details`, {
-        emptyRooms: parseInt(emptyRooms),
-        totalPersons: parseInt(totalPersons),
-        totalBoys: parseInt(totalBoys),
-        totalGirls: parseInt(totalGirls),
+        emptyRooms,
+        totalPersons,
+        totalBoys,
+        totalGirls,
       })
       .then((res) => {
         setData(res.data);
@@ -41,36 +39,49 @@ export default function UpdateData() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.labels}>Empty Rooms</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={emptyRooms}
-        onChangeText={(userdata) => setErrom(userdata)}
-      />
-      <Text style={styles.labels}>Total Persons</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={totalPersons}
-        onChangeText={(fname) => setTpersons(fname)}
-      />
-      <Text style={styles.labels_address}>Total Boys</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={totalBoys}
-        onChangeText={(address) => setBoys(address)}
-      />
-      <Text style={styles.labels}>Total Girls</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={totalGirls}
-        onChangeText={(mobile) => setGirls(mobile)}
-      />
-      <TouchableOpacity style={styles.saveButton}>
-        <Text style={styles.saveButtonText} onPress={submit}>
-          Save
+      {message == "data added successfully" ? (
+        <Text style={{ fontSize: 30, textAlign: "center", color: "green" }}>
+          {message}
         </Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
+      ) : (
+        <>
+          {" "}
+          <Text style={{ textAlign: "center", color: "blue", fontSize: 30 }}>
+            Update Hostel Data
+          </Text>
+          <Text style={styles.labels}>Empty Rooms</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={emptyRooms || ""}
+            onChangeText={(userdata) => setErrom(userdata)}
+          />
+          <Text style={styles.labels}>Total Persons</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={totalPersons || ""}
+            onChangeText={(fname) => setTpersons(fname)}
+          />
+          <Text style={styles.labels_address}>Total Boys</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={totalBoys || ""}
+            onChangeText={(address) => setBoys(address)}
+          />
+          <Text style={styles.labels}>Total Girls</Text>
+          <TextInput
+            style={styles.inputStyle}
+            value={totalGirls || ""}
+            onChangeText={(mobile) => setGirls(mobile)}
+          />
+          <TouchableOpacity style={styles.saveButton}>
+            <Text style={styles.saveButtonText} onPress={submit}>
+              Save
+            </Text>
+          </TouchableOpacity>
+          <StatusBar style="auto" />
+        </>
+      )}
+
       {/* <View style={styles.contentContainer}>
         <Menu />
       </View> */}
@@ -91,7 +102,7 @@ const styles = StyleSheet.create({
   },
   labels: {
     fontWeight: "bold",
-    // fontSize: 15,
+    fontSize: 18,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",
@@ -102,7 +113,7 @@ const styles = StyleSheet.create({
   labels_address: {
     height: 40,
     fontWeight: "bold",
-    // fontSize: 15,
+    fontSize: 18,
     color: "#7d7d7d",
     paddingBottom: 5,
     fontFamily: "JosefinSans_300Light",
@@ -131,6 +142,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 25,
     marginTop: 40,
+    borderRadius: 10,
   },
   saveButtonText: {
     color: "#FFFFFF",

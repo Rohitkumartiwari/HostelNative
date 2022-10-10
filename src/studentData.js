@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-native-modal";
 import {
   SafeAreaView,
@@ -6,27 +6,30 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  StatusBar,
   TouchableOpacity,
-  Button,
   TextInput,
   ScrollView,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import Menu from "./component/Menu";
 import moment from "moment";
 import axios from "axios";
 import CalendarPicker from "react-native-calendar-picker";
-import Moment from "react-moment";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 export default function StudentData() {
   const [data, setData] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(null);
-
+  const [message, setMessage] = useState();
   const [info, setInfo] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => {
-    axios
-      .get("https://apis-new.onrender.com/users")
-      .then((res) => setData(res.data));
+    setLoading(true);
+    axios.get("https://apis-new.onrender.com/users").then((res) => {
+      setData(res.data), setLoading(false);
+    });
   }, []);
   const submit = () => {
     let formData = new FormData();
@@ -64,7 +67,7 @@ export default function StudentData() {
         <Text style={styles.title}>{"Address : " + item.address}</Text>
         <Text style={styles.title}>{"Price : " + item.price}</Text>
         <Text style={styles.title}>
-          {"Date : " + moment(item.date).format("MMMM Do YYYY")}
+          {"Date : " + moment(item.date).format("YYYY/MM/DD")}
         </Text>
         <View
           style={{
@@ -107,63 +110,78 @@ export default function StudentData() {
           >
             <ScrollView>
               <View style={{ flex: 1, color: "white" }}>
-                <Text style={{ textAlign: "center", fontSize: 20 }}>
-                  Update Detail!
-                </Text>
-                <Text style={styles.labels}>Enter your name</Text>
-                <TextInput
-                  style={styles.inputStyle}
-                  value={info?.name}
-                  id="name"
-                  onChangeText={(newText) =>
-                    setInfo({ ...info, name: newText })
-                  }
-                />
-                <Text style={styles.labels}>Father Name</Text>
-                <TextInput
-                  style={styles.inputStyle}
-                  value={info?.FathersName}
-                  id="fname"
-                  onChangeText={(newText) =>
-                    setInfo({ ...info, FathersName: newText })
-                  }
-                />
-                <Text style={styles.labels_address}>Address</Text>
-                <TextInput
-                  style={styles.inputStyle}
-                  value={info?.address}
-                  numberOfLines={5}
-                  id="address"
-                  onChangeText={(newText) =>
-                    setInfo({ ...info, address: newText })
-                  }
-                />
-                <Text style={styles.labels}>Mobile No</Text>
-                <TextInput
-                  style={styles.inputStyle}
-                  value={info?.mobile}
-                  id="mobile"
-                  onChangeText={(newText) =>
-                    setInfo({ ...info, mobile: newText })
-                  }
-                />
-                <Text style={styles.labels}>Price</Text>
-                <TextInput
-                  style={styles.inputStyle}
-                  value={info?.price}
-                  id="price"
-                  onChangeText={(newText) =>
-                    setInfo({ ...info, price: newText })
-                  }
-                />
-
-                <Text style={styles.labels}>Joining Date</Text>
-                <CalendarPicker
-                  style={{ padding: 10 }}
-                  onDateChange={(d) => {
-                    setDate(moment(d).format("YYYY/MM/DD"));
-                  }}
-                />
+                {message == "data added successfully" ? (
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 30,
+                      color: "green",
+                      margin: 40,
+                    }}
+                  >
+                    {message}
+                  </Text>
+                ) : (
+                  <>
+                    {" "}
+                    <Text style={{ textAlign: "center", fontSize: 20 }}>
+                      Update Detail!
+                    </Text>
+                    <Text style={styles.labels}>Enter your name</Text>
+                    <TextInput
+                      style={styles.inputStyle}
+                      value={info?.name}
+                      id="name"
+                      onChangeText={(newText) =>
+                        setInfo({ ...info, name: newText })
+                      }
+                    />
+                    <Text style={styles.labels}>Father Name</Text>
+                    <TextInput
+                      style={styles.inputStyle}
+                      value={info?.FathersName}
+                      id="fname"
+                      onChangeText={(newText) =>
+                        setInfo({ ...info, FathersName: newText })
+                      }
+                    />
+                    <Text style={styles.labels_address}>Address</Text>
+                    <TextInput
+                      style={styles.inputStyle}
+                      value={info?.address}
+                      numberOfLines={5}
+                      id="address"
+                      onChangeText={(newText) =>
+                        setInfo({ ...info, address: newText })
+                      }
+                    />
+                    <Text style={styles.labels}>Mobile No</Text>
+                    <TextInput
+                      style={styles.inputStyle}
+                      value={info?.mobile}
+                      id="mobile"
+                      onChangeText={(newText) =>
+                        setInfo({ ...info, mobile: newText })
+                      }
+                    />
+                    <Text style={styles.labels}>Price</Text>
+                    <TextInput
+                      style={styles.inputStyle}
+                      value={info?.price}
+                      id="price"
+                      onChangeText={(newText) =>
+                        setInfo({ ...info, price: newText })
+                      }
+                    />
+                    <Text style={styles.labels}>Joining Date</Text>
+                    <CalendarPicker
+                      style={{ padding: 10 }}
+                      onDateChange={(d) => {
+                        setDate(moment(d).format("YYYY/MM/DD"));
+                      }}
+                    />
+                  </>
+                )}
 
                 <TouchableOpacity style={styles.saveButton}>
                   <Text style={styles.saveButtonText} onPress={submit}>
@@ -188,23 +206,36 @@ export default function StudentData() {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <SafeAreaView style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 30, color: "blue" }}>
           Student Data
         </Text>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item._id}
-          ItemSeparatorComponent={SeparatorComponent}
-        />
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            style={{ textAlign: "center", color: "green", marginTop: 50 }}
+          />
+        ) : (
+          <>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              keyExtractor={(item) => item._id}
+              ItemSeparatorComponent={SeparatorComponent}
+            />
+          </>
+        )}
       </SafeAreaView>
-      {/* <View style={styles.contentContainer}>
-        <Menu />
-      </View> */}
     </ScrollView>
   );
 }
@@ -289,6 +320,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 5,
     marginBottom: 10,
+    borderRadius: 10,
   },
   saveButtonText: {
     color: "#FFFFFF",
